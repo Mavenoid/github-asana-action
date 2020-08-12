@@ -12,11 +12,13 @@ This action integrates asana with github.
 
 ### `asana-pat`
 
-**Required** Your public access token of asana, you can find it in [asana docs](https://developers.asana.com/docs/#authentication-basics).
+**Required** Your public access token of asana, you can create one at https://app.asana.com/0/developer-console (see [asana docs](https://developers.asana.com/docs/#authentication-basics) for details).
 
 ### `trigger-phrase`
 
-**Required** Prefix before the task i.e ASANA TASK: https://app.asana.com/1/2/3/.
+**Optional** Prefix before the task e.g. "closes" woudl match "closes: https://app.asana.com/1/2/3/".
+
+if you do not supply a trigger phrase, all task URLs will match
 
 ### `task-comment`
 
@@ -34,10 +36,8 @@ if you don't want to move task omit `targets`.
 ## Example usage
 
 ```yaml
-uses: https://github.com/insurify/github-actions@v2.0.0
+uses: mavenoid/github-asana-action
 with:
   asana-pat: 'Your PAT'
   task-comment: 'View Pull Request Here: '
-  trigger-phrase: 'Asana Task:'
-  targets: '[{"project": "Backlog", "section": "Development Done"}, {"project": "Current Sprint", "section": "In Review"}]'
 ```

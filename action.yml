@@ -11,8 +11,8 @@ inputs:
     description: 'JSON array of objects having project and section where to move current task. Move task only if it exists in target project.'
     required: false
   trigger-phrase:
-    description: 'Prefix before the task i.e ASANA TASK: https://app.asana.com/1/2/3'
-    required: true
+    description: 'Prefix before the task e.g. "closes" would match "closes: https://app.asana.com/1/2/3". Must match /^[A-Za-z_]+$/'
+    required: false
 branding:
   icon: 'chevron-right'  
   color: 'gray-dark'
