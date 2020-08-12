@@ -6,7 +6,8 @@ async function asanaOperations(
   asanaPAT,
   targets,
   taskId,
-  taskComment
+  taskComment,
+  markCompleted
 ) {
   try {
     const client = asana.Client.create({
@@ -38,6 +39,9 @@ async function asanaOperations(
       });
       core.info('Added the pull request link to the Asana task.');
     }
+    if (markCompleted) {
+      await client.tasks.update(taskId, {completed: true});
+    }
   } catch (ex) {
     console.error(ex.value);
   }
@@ -48,6 +52,7 @@ try {
     TARGETS = core.getInput('targets'),
     TRIGGER_PHRASE = core.getInput('trigger-phrase'),
     TASK_COMMENT = core.getInput('task-comment'),
+    MARK_COMPLETED = core.getInput('mark-completed'),
     PULL_REQUEST = github.context.payload.pull_request;
   
   const REGEX = /(?:([A-Za-z_]+)\: *)?https\:\/\/app\.asana\.com\/\d+\/\d+\/(\d+)/g;
@@ -70,7 +75,7 @@ try {
     const taskId = parseAsanaURL[2];
     core.info(`Found asana link: ${parseAsanaURL[2]} (trigger phrase: ${trigger || 'none'})`);
     if (!TRIGGER_PHRASE || tigger === TRIGGER_PHRASE) {
-      asanaOperations(ASANA_PAT, targets, taskId, taskComment);
+      asanaOperations(ASANA_PAT, targets, taskId, taskComment, MARK_COMPLETED === 'true');
       tasksCount++;
     }
   }

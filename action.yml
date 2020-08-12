@@ -13,6 +13,10 @@ inputs:
   trigger-phrase:
     description: 'Prefix before the task e.g. "closes" would match "closes: https://app.asana.com/1/2/3". Must match /^[A-Za-z_]+$/'
     required: false
+  mark-completed:
+    description: 'Set this to "true" to mark the task as completed'
+    required: false
+    default: 'false'
 branding:
   icon: 'chevron-right'  
   color: 'gray-dark'
