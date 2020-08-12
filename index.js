@@ -41,6 +41,7 @@ async function asanaOperations(
     }
     if (markCompleted) {
       await client.tasks.update(taskId, {completed: true});
+      core.info('Marked the Asana task as completed.');
     }
   } catch (ex) {
     console.error(ex.value);
