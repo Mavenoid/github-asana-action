@@ -35,7 +35,7 @@ async function asanaOperations(
 
     if (taskComment) {
       await client.tasks.addComment(taskId, {
-        text: taskComment
+        html_text: `<body>${taskComment}</body>`
       });
       core.info('Added the pull request link to the Asana task.');
     }
@@ -68,7 +68,16 @@ try {
     throw({message: 'ASANA PAT Not Found!'});
   }
   if (TASK_COMMENT) {
-    taskComment = `${TASK_COMMENT} ${PULL_REQUEST.html_url}`;
+    console.log(`TASK_COMMENT=${TASK_COMMENT}`)
+    taskComment = `${TASK_COMMENT}`.replace(/\$([A-Z0-9_]+)/g, (_, name) => {
+      const value = process.env[name];
+      return value
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+    })
+    console.log(`formatted=${taskComment}`)
   }
   let tasksCount = 0;
   while ((parseAsanaURL = REGEX.exec(PULL_REQUEST.body)) !== null) {
