@@ -1,18 +1,18 @@
 name: Link to asana task
 
-on:
-  pull_request:
-    types: [opened]
+on: [pull_request]
 
 jobs:
   link-to-asana:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: ../..
+      - uses: actions/setup-node@v1
         with:
-          asana-pat: ${{ secrets.ASANA_ACCESS_TOKEN }}
-          task-comment: 'PR: <a href="$PR_URL">$PR_TITLE</a>'
+          node-version: "12"
+      - run: node index
         env:
+          INPUT_ASANA-PAT: ${{ secrets.ASANA_ACCESS_TOKEN }}
+          INPUT_TASK-COMMENT: 'PR: <a href="$PR_URL">$PR_TITLE</a>'
           PR_TITLE: ${{ github.event.pull_request.title }}
           PR_URL: ${{ github.event.pull_request.html_url }}
