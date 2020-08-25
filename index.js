@@ -35,7 +35,7 @@ async function asanaOperations(
 
     if (taskComment) {
       await client.tasks.addComment(taskId, {
-        html_text: taskComment
+        html_text: `<body>${taskComment}</body>`
       });
       core.info('Added the pull request link to the Asana task.');
     }
